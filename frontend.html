@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Pi Transfer</title>
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+</head>
+<body>
+  <h1>Authenticate with Pi</h1>
+  <button onclick="loginWithPi()">Login & Start Transfer</button>
+
+  <script>
+    function loginWithPi() {
+      Pi.authenticate(function(auth) {
+        // Send access token to backend
+        fetch('https://api.yourdomain.com/transfer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            accessToken: auth.accessToken
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert("Backend response: " + JSON.stringify(data));
+        });
+      }, ['username', 'payments']);
+    }
+  </script>
+</body>
+</html>
